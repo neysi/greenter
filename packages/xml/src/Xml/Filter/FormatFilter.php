@@ -16,7 +16,7 @@ class FormatFilter
     public function numberLimit($number, $decimals): ?string
     {
         $numString = (string)$number;
-        $applyFormat = $this->getDecimalsLength($numString) > $decimals || strpos($numString, "E") !== false;
+        $applyFormat = $this->getDecimalsLength($numString) >= $decimals || strpos($numString, "E") !== false;
 
         return $applyFormat ? $this->number($number, $decimals) : $this->number($numString);
     }
