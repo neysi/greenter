@@ -18,6 +18,7 @@ class FormatFilter
          return $this->number($number, $decimals);
         
         $numString = (string)$number;
+
         $applyFormat = $this->getDecimalsLength($numString)>= $decimals || strpos($numString, "E") !== false;
         return $applyFormat ? $this->number($number, $decimals) : $this->number($numString);
     }
