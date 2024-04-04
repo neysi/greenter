@@ -78,7 +78,7 @@
 		</cac:Party>
 	</cac:BuyerCustomerParty>
 	{% endif %}
-	{% if doc.tercero %}
+	{% if doc.tipoDoc == '09' and doc.tercero %}
 	<cac:SellerSupplierParty>
 		<cac:Party>
 			<cac:PartyIdentification>
@@ -93,7 +93,9 @@
     {% set envio = doc.envio %}
 	<cac:Shipment>
 		<cbc:ID>SUNAT_Envio</cbc:ID>
+		{% if doc.tipoDoc == '09' %}
 		<cbc:HandlingCode listAgencyName="PE:SUNAT" listName="Motivo de traslado" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo20">{{ envio.codTraslado }}</cbc:HandlingCode>
+		{% endif %}
         {% if envio.desTraslado %}
 		<cbc:HandlingInstructions>{{ envio.desTraslado }}</cbc:HandlingInstructions>
 		{% endif %}
@@ -111,7 +113,9 @@
 		<cbc:SpecialInstructions>{{ indicador }}</cbc:SpecialInstructions>
 		{% endfor %}
 		<cac:ShipmentStage>
+			{% if doc.tipoDoc == '09' %}
 			<cbc:TransportModeCode listName="Modalidad de traslado" listAgencyName="PE:SUNAT" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo18">{{ envio.modTraslado }}</cbc:TransportModeCode>
+			{% endif %}
 			{% if envio.fecTraslado %}
 			<cac:TransitPeriod>
 				<cbc:StartDate>{{ envio.fecTraslado|date('Y-m-d') }}</cbc:StartDate>
@@ -124,7 +128,9 @@
 				</cac:PartyIdentification>
 				<cac:PartyLegalEntity>
 					<cbc:RegistrationName><![CDATA[{{ envio.transportista.rznSocial|raw }}]]></cbc:RegistrationName>
+					{% if envio.transportista.nroMtc %}
 					<cbc:CompanyID>{{ envio.transportista.nroMtc }}</cbc:CompanyID>
+					{% endif %}
 				</cac:PartyLegalEntity>
 			</cac:CarrierParty>
             {% endif %}
@@ -160,6 +166,16 @@
 						<cbc:Line>{{ envio.partida.direccion }}</cbc:Line>
 					</cac:AddressLine>
 				</cac:DespatchAddress>
+				{% if doc.tipoDoc == '31' %}
+				<cac:DespatchParty>
+					<cac:PartyIdentification>
+						<cbc:ID schemeID="{{ doc.tercero.tipoDoc }}" schemeName="Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ doc.tercero.numDoc }}</cbc:ID>
+					</cac:PartyIdentification>
+					<cac:PartyLegalEntity>
+						<cbc:RegistrationName><![CDATA[{{ doc.tercero.rznSocial|raw }}]]></cbc:RegistrationName>
+					</cac:PartyLegalEntity>
+				  </cac:DespatchParty>
+				{% endif %}
 			</cac:Despatch>
 		</cac:Delivery>
 		{% for precinto in envio.contenedores %}
