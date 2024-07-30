@@ -41,6 +41,11 @@ class CdrResponse
     protected $reference;
 
     /**
+     * @var string|null
+     */
+    protected $qrUrl;
+
+    /**
      * @return string
      */
     public function getId(): ?string
@@ -146,5 +151,26 @@ class CdrResponse
         $code = (int)$this->getCode();
 
         return $code === 0 || $code >= 4000;
+    }
+
+    /**
+     * @return  string|null
+     */
+    public function getQrUrl(): ?string {
+        return $this->qrUrl;
+    }
+
+        /**
+     * @param string|null $reference
+     */
+    public function setQrlUrl(?string $qrUrl): CdrResponse
+    {
+        if (filter_var($qrUrl, FILTER_VALIDATE_URL) === false) {
+            $this->qrUrl = null;
+        } else {
+            $this->qrUrl = $qrUrl;
+        }
+    
+        return $this;
     }
 }

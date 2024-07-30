@@ -62,7 +62,8 @@ class DomCdrReader implements CdrReaderInterface
             ->setCode($this->reader->getValue($nodePrefix.'cbc:ResponseCode'))
             ->setDescription($this->reader->getValue($nodePrefix.'cbc:Description'))
             ->setNotes($this->getNotes())
-            ->setReference($this->reader->getValue($referencePath));
+            ->setReference($this->reader->getValue($referencePath))
+            ->setQrlUrl($this->reader->getValue($referencePath));
 
         return $cdr;
     }
