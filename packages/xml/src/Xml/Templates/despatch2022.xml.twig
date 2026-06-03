@@ -145,6 +145,9 @@
 				</cac:IdentityDocumentReference>
 			</cac:DriverPerson>
 			{% endfor %}
+			<cac:LoadingTransportEvent>
+				<cbc:OccurrenceDate>{{ doc.fechaEmision|date('Y-m-d') }}</cbc:OccurrenceDate>
+			</cac:LoadingTransportEvent>	
 		</cac:ShipmentStage>
 		<cac:Delivery>
 			<cac:DeliveryAddress>
